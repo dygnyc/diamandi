@@ -1,0 +1,58 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://art/frames/diamiandi_player_32x32_5.png" type="Texture" id=1]
+[ext_resource path="res://art/frames/diamiandi_player_32x32_6.png" type="Texture" id=2]
+[ext_resource path="res://art/frames/diamiandi_player_32x32_4.png" type="Texture" id=3]
+[ext_resource path="res://Player.cs" type="Script" id=5]
+[ext_resource path="res://art/frames/diamiandi_player_32x32_3.png" type="Texture" id=6]
+[ext_resource path="res://art/frames/diamiandi_player_32x32_0.png" type="Texture" id=7]
+[ext_resource path="res://art/frames/diamiandi_player_32x32_1.png" type="Texture" id=8]
+[ext_resource path="res://art/frames/diamiandi_player_32x32_2.png" type="Texture" id=9]
+[ext_resource path="res://art/diamiandi_player_32x32_shield.png" type="Texture" id=10]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "walk",
+"speed": 2.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "up",
+"speed": 2.0
+}, {
+"frames": [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 8 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 11, 11 )
+
+[node name="Player" type="Area2D"]
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+scale = Vector2( 2, 2 )
+frames = SubResource( 1 )
+animation = "idle"
+frame = 1
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 0.785398
+scale = Vector2( 2, 2 )
+shape = SubResource( 4 )
+
+[node name="Shield" type="Sprite" parent="."]
+visible = false
+scale = Vector2( 2, 2 )
+texture = ExtResource( 10 )
+
+[connection signal="area_entered" from="." to="." method="_on_Player_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
