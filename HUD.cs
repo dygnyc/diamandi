@@ -6,12 +6,6 @@ public class HUD : CanvasLayer
     [Signal]
     public delegate void StartGame();
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
-    {
-        
-    }
-
     public void ShowMessage(string text)
     {
         Label message = GetNode<Label>("Message");
@@ -30,16 +24,19 @@ public class HUD : CanvasLayer
         await ToSignal(messageTimer, "timeout");
 
         Label message = GetNode<Label>("Message");
-        message.Text = "Dodge the\nCreeps!";
+        message.Text = "Diamandi";
         message.Show();
 
         await ToSignal(GetTree().CreateTimer(1), "timeout");
         GetNode<Button>("StartButton").Show();
     }
 
-    public void UpdateScore(int score)
+    public void UpdateScore(int score, int hiScore)
     {
         GetNode<Label>("ScoreLabel").Text = score.ToString();
+
+        GetNode<Label>("HiScoreLabel").Text = hiScore.ToString();
+
     }
 
     public void _on_StartButton_pressed()
@@ -53,9 +50,4 @@ public class HUD : CanvasLayer
         GetNode<Label>("Message").Hide();
     }
 
-    //  // Called every frame. 'delta' is the elapsed time since the previous frame.
-    //  public override void _Process(float delta)
-    //  {
-    //      
-    //  }
 }

@@ -1,33 +1,71 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=30 format=2]
 
-[ext_resource path="res://art/enemyWalking_2.png" type="Texture" id=1]
-[ext_resource path="res://art/enemyWalking_1.png" type="Texture" id=2]
-[ext_resource path="res://art/enemySwimming_1.png" type="Texture" id=3]
-[ext_resource path="res://art/enemySwimming_2.png" type="Texture" id=4]
-[ext_resource path="res://art/enemyFlyingAlt_1.png" type="Texture" id=5]
-[ext_resource path="res://art/enemyFlyingAlt_2.png" type="Texture" id=6]
+[ext_resource path="res://art/mob2Death/mob3_death_0.png" type="Texture" id=1]
+[ext_resource path="res://art/mob2/mob2_0.png" type="Texture" id=2]
+[ext_resource path="res://art/mob2/mob2_1.png" type="Texture" id=3]
+[ext_resource path="res://art/mob2/mob2_2.png" type="Texture" id=4]
+[ext_resource path="res://art/mob2/mob2_3.png" type="Texture" id=5]
+[ext_resource path="res://art/mob2/mob2_4.png" type="Texture" id=6]
 [ext_resource path="res://Mob.cs" type="Script" id=7]
+[ext_resource path="res://art/mob2Death/mob3_death_1.png" type="Texture" id=8]
+[ext_resource path="res://art/mob2Death/mob3_death_2.png" type="Texture" id=9]
+[ext_resource path="res://art/mob3Death/mob3_death_0.png" type="Texture" id=10]
+[ext_resource path="res://art/mob3Death/mob3_death_2.png" type="Texture" id=11]
+[ext_resource path="res://art/mob3/mob3_0.png" type="Texture" id=12]
+[ext_resource path="res://art/mob3/mob3_1.png" type="Texture" id=13]
+[ext_resource path="res://art/mob3/mob3_2.png" type="Texture" id=14]
+[ext_resource path="res://art/mob3/mob3_3.png" type="Texture" id=15]
+[ext_resource path="res://art/mob3/mob3_4.png" type="Texture" id=16]
+[ext_resource path="res://art/mob1Death/mob1_death_0.png" type="Texture" id=17]
+[ext_resource path="res://art/mob1Death/mob1_death_1.png" type="Texture" id=18]
+[ext_resource path="res://art/mob1/mob1_0.png" type="Texture" id=19]
+[ext_resource path="res://art/mob1/mob1_1.png" type="Texture" id=20]
+[ext_resource path="res://art/mob1/mob1_2.png" type="Texture" id=21]
+[ext_resource path="res://art/mob1Death/mob1_death_2.png" type="Texture" id=22]
+[ext_resource path="res://art/mob1/mob1_3.png" type="Texture" id=23]
+[ext_resource path="res://art/mob1/mob1_4.png" type="Texture" id=24]
+[ext_resource path="res://art/mob3Death/mob3_death_1.png" type="Texture" id=25]
+[ext_resource path="res://audio/mobDeath.wav" type="AudioStream" id=26]
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "green",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 23 ), ExtResource( 21 ), ExtResource( 20 ) ],
+"loop": true,
+"name": "red",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 15 ), ExtResource( 13 ), ExtResource( 14 ) ],
+"loop": true,
+"name": "eye",
+"speed": 5.0
+} ]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 3 ), ExtResource( 4 ) ],
-"loop": true,
-"name": "swim",
+"frames": [ ExtResource( 1 ), ExtResource( 8 ), ExtResource( 9 ) ],
+"loop": false,
+"name": "green",
 "speed": 3.0
 }, {
-"frames": [ ExtResource( 5 ), ExtResource( 6 ) ],
-"loop": true,
-"name": "fly",
+"frames": [ ExtResource( 17 ), ExtResource( 18 ), ExtResource( 22 ) ],
+"loop": false,
+"name": "red",
 "speed": 3.0
 }, {
-"frames": [ ExtResource( 2 ), ExtResource( 1 ) ],
-"loop": true,
-"name": "walk",
+"frames": [ ExtResource( 10 ), ExtResource( 25 ), ExtResource( 11 ) ],
+"loop": false,
+"name": "eye",
 "speed": 3.0
 } ]
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 36.0
+radius = 48.5714
+height = 0.0
 
 [node name="Mob" type="RigidBody2D" groups=["mobs"]]
 collision_layer = 0
@@ -37,16 +75,30 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-scale = Vector2( 0.75, 0.75 )
-frames = SubResource( 1 )
-animation = "walk"
+[node name="Alive" type="AnimatedSprite" parent="."]
+visible = false
+scale = Vector2( 2.3, 2.3 )
+frames = SubResource( 3 )
+animation = "red"
 playing = true
+
+[node name="Death" type="AnimatedSprite" parent="."]
+visible = false
+scale = Vector2( 2.3, 2.3 )
+frames = SubResource( 1 )
+animation = "eye"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
+scale = Vector2( 0.7, 0.7 )
 shape = SubResource( 2 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 
+[node name="mobDeath" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 26 )
+volume_db = -3.0
+
+[connection signal="hide" from="Alive" to="." method="_on_Alive_hide"]
+[connection signal="animation_finished" from="Death" to="." method="_on_Death_animation_finished"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

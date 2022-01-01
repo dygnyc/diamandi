@@ -6,13 +6,17 @@ public class Main : Node
     [Export]
     public PackedScene Mob;
 
+    [Export]
+    public PackedScene Shield;
+
     private int _score;
+    private int _hiScore;
 
     private Random _random = new Random();
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
-    { 
+    {
         OS.SetWindowTitle("Diamandi");
     }
 
@@ -25,6 +29,7 @@ public class Main : Node
 
     public void game_over()
     {
+        GetNode<Timer>("ShieldTimer").Stop();
         GetNode<Timer>("MobTimer").Stop();
         GetNode<Timer>("ScoreTimer").Stop();
 
@@ -32,10 +37,10 @@ public class Main : Node
 
         //GD.Print("call Group");
         GetTree().CallGroup("mobs", "queue_free");
+        GetTree().CallGroup("pickups", "queue_free");
+        //destroy any existing mobs and pickups
 
         GetNode<AudioStreamPlayer>("Music").Stop();
-        GetNode<AudioStreamPlayer>("DeathSound").Play();
-
 
     }
 
@@ -52,8 +57,12 @@ public class Main : Node
         GetNode<Timer>("StartTimer").Start();
 
         HUD hud = GetNode<HUD>("HUD");
-        hud.UpdateScore(_score);
+        hud.UpdateScore(_score, _hiScore);
         hud.ShowMessage("Get Ready!");
+
+        //spawn shield at beginning of a new game
+        SpawnShield();
+
     }
 
     public void _on_StartTimer_timeout()
@@ -65,7 +74,19 @@ public class Main : Node
     public void _on_ScoreTimer_timeout()
     {
         _score++;
-        GetNode<HUD>("HUD").UpdateScore(_score);
+
+        //set high score
+        if (_score >= _hiScore)
+        {
+
+            _hiScore = _score;
+
+        }
+
+        GetNode<HUD>("HUD").UpdateScore(_score, _hiScore);
+
+        // GD.Print(_hiScore);
+
     }
 
     public void _on_MobTimer_timeout()
@@ -92,9 +113,22 @@ public class Main : Node
         mobInstance.LinearVelocity = new Vector2(RandRange(150f, 250f), 0).Rotated(direction);
     }
 
-    //  // Called every frame. 'delta' is the elapsed time since the previous frame.
-    //  public override void _Process(float delta)
-    //  {
-    //      
-    //  }
+
+    public void _on_ShieldTimer_timeout() { SpawnShield(); }
+
+
+    public void SpawnShield()
+    {
+        //get random x and y within window
+        //spawn shield within window with padding
+        int xPos = _random.Next(50, (int)OS.GetRealWindowSize().x - 50);
+        int yPos = _random.Next(50, (int)OS.GetRealWindowSize().y - 50);
+
+        // instance shield
+        Area2D shieldInstance = (Area2D)Shield.Instance();
+        AddChild(shieldInstance); //add to scene
+        shieldInstance.Position = new Vector2(xPos, yPos); //set position
+
+    }
+
 }
